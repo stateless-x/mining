@@ -1,0 +1,1 @@
+export const MEMPOOL_ENDPOINT = "https://mempool.space/api/v1";
