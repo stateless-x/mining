@@ -1,5 +1,7 @@
 export interface PoolData {
   pools: PoolListResponse[];
+  blockCount: number;
+  lastEstimatedHashrate: number;
 }
 
 export interface PoolListResponse {
