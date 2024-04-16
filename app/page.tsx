@@ -1,12 +1,13 @@
+'use client';
 import Image from "next/image";
 import PoolList from "@Components/PoolList";
+import Navbar from "@Components/Navbar";
 
 export default function Home() {
   return (
-    <main className="">
-      <div>
-        <PoolList />
-      </div>
+    <main>
+      <Navbar />
+      <PoolList />
     </main>
   );
 }
