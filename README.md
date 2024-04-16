@@ -3,20 +3,20 @@
 Also trying Mantine UI for fun.
 
 # Resources:
-  ### DATA: 
+  ## DATA: 
     - mempool.space
-  ### UI:
+  ## UI:
     - Mantine v7.8.0
     - tailwind v3.3.0
     - tabler(icons) v3.2.0 
-  ### STATE MANAGEMENT:
+  ## STATE MANAGEMENT:
     - zustand v4.5.2
 
 # Future plan: 
-  ### Main:
+  ## Main:
   - add daily, monthly, yearly stats
   - Add each pool's hashrate
   - Improve UI 
-  ### Others:
+  ## Others:
     - Transaction fee
   
