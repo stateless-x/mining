@@ -4,13 +4,13 @@ Also trying Mantine UI for fun.
 
 # Resources:
   ## DATA: 
-    - mempool.space
+  - mempool.space
   ## UI:
-    - Mantine v7.8.0
-    - tailwind v3.3.0
-    - tabler(icons) v3.2.0 
+  - Mantine v7.8.0
+  - tailwind v3.3.0
+  - tabler(icons) v3.2.0 
   ## STATE MANAGEMENT:
-    - zustand v4.5.2
+  - zustand v4.5.2
 
 # Future plan: 
   ## Main:
@@ -18,5 +18,5 @@ Also trying Mantine UI for fun.
   - Add each pool's hashrate
   - Improve UI 
   ## Others:
-    - Transaction fee
+  - Transaction fee
   
