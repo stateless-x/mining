@@ -7,6 +7,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { PERIOD } from '@Models/constants';
 
 const PoolList = () => {
+  // type TimeframeKey = "Daily" | "Weekly" | "Monthly" | "Yearly";
   type TimeframeKey = keyof typeof timeframeOptions;
   const { data, setWeeklyTop } = useStore();
   const [visible, handler] = useDisclosure(true);
@@ -46,7 +47,12 @@ const PoolList = () => {
           <Select 
           defaultValue="Weekly"
           data={Object.keys(timeframeOptions).map(key => ({ value: key, label: key }))}
-          onChange={(value: TimeframeKey) => fetchTopTenPools(value)}
+          onChange={(value) => {
+            if (value !== null) {
+              fetchTopTenPools(value as TimeframeKey);
+              setTimeframe(value as TimeframeKey);
+            }
+          }}
           className="
           w-full
           sm:w-1/6"
