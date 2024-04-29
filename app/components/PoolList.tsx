@@ -47,10 +47,10 @@ const PoolList = () => {
           <Select 
           defaultValue="Weekly"
           data={Object.keys(timeframeOptions).map(key => ({ value: key, label: key }))}
-          onChange={(value) => {
-            if (value !== null) {
-              fetchTopTenPools(value as TimeframeKey);
-              setTimeframe(value as TimeframeKey);
+          onChange={(_value, option) => {
+            if (_value !== null) {
+              fetchTopTenPools(_value as TimeframeKey);
+              setTimeframe(_value as TimeframeKey);
             }
           }}
           className="
