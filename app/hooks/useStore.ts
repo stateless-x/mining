@@ -27,7 +27,7 @@ const useStore = create<PoolStore>()(
         }
       }),
     {
-      name: 'pool-storage',
+      name: 'weekly-storage',
       storage: createJSONStorage(() => sessionStorage),
     },
   ),

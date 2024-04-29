@@ -1,14 +1,14 @@
 import { PoolData, PoolListResponse } from "@Models/services/MempoolServicesModel";
 import MempoolApi from "@API/MempoolApi";
 
-const getWeeklyData = async (): Promise<PoolData> => {
-  const response: PoolData = await MempoolApi.getPoolDataWeekly();
+const getPoolData = async (timeframe: string): Promise<PoolData> => {
+  const response: PoolData = await MempoolApi.getPoolData(timeframe);
   return response;
 };
 
-const getTopTenPools = async (): Promise<PoolListResponse[]|null> => {
+const getTopTenPools = async (timeframe: string): Promise<PoolListResponse[]|null> => {
   try {
-    const result = await getWeeklyData();
+    const result = await getPoolData(timeframe);
     const topTen = result.pools
       .sort((a, b) => a.rank - b.rank)
       .slice(0, 10);
@@ -19,4 +19,4 @@ const getTopTenPools = async (): Promise<PoolListResponse[]|null> => {
   }
 }
 
-export default {getWeeklyData, getTopTenPools};
+export default {getPoolData, getTopTenPools};
