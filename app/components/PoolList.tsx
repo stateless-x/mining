@@ -1,17 +1,23 @@
 'use client';
 import MempoolService from "@Services/MempoolService";
 import { useState, useEffect } from "react";
-import useStore from "@Hooks/useStore";
+import { useDailyStore, useWeeklyStore, useMonthlyStore, useYearlyStore} from "@Hooks/useStore";
 import { Table, Anchor, Box, LoadingOverlay, Select } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { PERIOD } from '@Models/constants';
+import { PoolListResponse } from "@Models/services/MempoolServicesModel";
 
 const PoolList = () => {
   // type TimeframeKey = "Daily" | "Weekly" | "Monthly" | "Yearly";
   type TimeframeKey = keyof typeof timeframeOptions;
-  const { data, setWeeklyTop } = useStore();
+  const { data:dailyData, setDailyTop } = useDailyStore();
+  const { data:weeklyData , setWeeklyTop } = useWeeklyStore();
+  const { data:monthlyData, setMonthlyTop } = useMonthlyStore();
+  const { data:yearlyData, setYearlyTop } = useYearlyStore();
+
   const [visible, handler] = useDisclosure(true);
   const [timeframe, setTimeframe] = useState<TimeframeKey>("Weekly")
+  const [currentData, setCurrentData] = useState<PoolListResponse[] | null>();
 
   const timeframeOptions = {
     "Daily": PERIOD.DAILY,
@@ -20,21 +26,64 @@ const PoolList = () => {
     "Yearly": PERIOD.YEARLY,
   };
 
+  useEffect(() => {
+    fetchTopTenPools(timeframe);
+  }, [timeframe, dailyData, weeklyData, monthlyData, yearlyData]);
+
   const fetchTopTenPools = async (selectedTimeframe: TimeframeKey) => {
-    const topTen = await MempoolService.getTopTenPools(timeframeOptions[selectedTimeframe]);
-    if (topTen) {
-      setWeeklyTop(topTen);
+    // show curent data based on selected time frame
+    let dataNeeded = true;
+    switch(selectedTimeframe) {
+      case "Daily":
+        if (dailyData) {
+          setCurrentData(dailyData);
+          dataNeeded = false;
+        }
+        break;
+      case "Weekly":
+        if (weeklyData) {
+          setCurrentData(weeklyData);
+          dataNeeded = false;
+        }
+        break;
+      case "Monthly":
+        if (monthlyData) {
+          setCurrentData(monthlyData);
+          dataNeeded = false;
+        }
+        break;
+      case "Yearly":
+        if (yearlyData) {
+          setCurrentData(yearlyData);
+          dataNeeded = false;
+        }
+        break;
+    }
+
+    // fetch data only when necessary
+    if (dataNeeded) {
+      handler.open();
+      const topTen = await MempoolService.getTopTenPools(timeframeOptions[selectedTimeframe]);
+      switch(selectedTimeframe) {
+        case "Daily":
+          setDailyTop(topTen);
+          break;
+        case "Weekly":
+          setWeeklyTop(topTen);
+          break;
+        case "Monthly":
+          setMonthlyTop(topTen);
+          break;
+        case "Yearly":
+          setYearlyTop(topTen);
+          break;
+        default:
+          null;
+      }
+      handler.close();
     }
   };
-
-  useEffect(() => {
-    if (data === null) {
-      //toggle loading overlay
-      handler.toggle(); 
-      fetchTopTenPools(timeframe);
-    }
-  }, [data, timeframe]);
-
+ 
   return (
     <>
       <div className="sm:mx-auto block min-w-[375px] sm:w-5/6 w-full px-4 sm:px-0">
@@ -45,7 +94,8 @@ const PoolList = () => {
         </h1>
         <div className="flex justify-end my-4">
           <Select 
-          defaultValue="Weekly"
+          // defaultValue="Weekly"
+          value={timeframe}
           data={Object.keys(timeframeOptions).map(key => ({ value: key, label: key }))}
           onChange={(_value, option) => {
             if (_value !== null) {
@@ -69,8 +119,8 @@ const PoolList = () => {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody className="text-base">
-              {data ? (
-                data.map((pool, index) => (
+              { currentData ? (
+                currentData && currentData.map((pool, index) => (
                   <Table.Tr key={index}>
                     <Table.Td>{pool.rank}</Table.Td>
                     <Table.Td>{pool.name}</Table.Td>
@@ -92,4 +142,5 @@ const PoolList = () => {
     </>
   );
 };
+
 export default PoolList;
