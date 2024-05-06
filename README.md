@@ -14,7 +14,7 @@ Also trying Mantine UI for fun.
 
 # Future plan: 
   ## Main:
-  - add daily, monthly, yearly stats
+  - ✅ add daily, monthly, yearly stats
   - Add each pool's hashrate
   - Improve UI 
   ## Others:
